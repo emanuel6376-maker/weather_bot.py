@@ -1,0 +1,27 @@
+name: Atualizar CAPE
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+jobs:
+  weather:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar arquivos
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Enviar CAPE para Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python weather_bot.py
